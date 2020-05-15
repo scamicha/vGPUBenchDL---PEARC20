@@ -22,7 +22,7 @@
 %% in the same archive or directory.)
 %%
 %% The first command in your LaTeX source must be the \documentclass command.
-\documentclass[acmtog, authorversion]{acmart}
+\documentclass[acmsmall, authorversion]{acmart}
 \usepackage{tablefootnote}
 \usepackage{listings}
 \lstset{breaklines=true}
@@ -300,11 +300,13 @@ The reference machine for MLPerf is "16 CPUs, one Nvidia P100"\footnote{MLPerf v
 
 Running the image classification training task on the 16Q fixed instance was 7\% slower than the bare metal run, roughly in line with the HPL numbers. In addition, we performed a run of image classification on bare metal using all four of the V100s. When compared to the single card bare metal run, using all four GPUs in a node for the image classification training task was 3.06 times faster. While the image classification benchmark ran without much issue on bare metal, we did encounter problems with the run on 16Q. Investigation of the vGPU via {\tt nvidia-smi} revealed that the device was presenting more memory than was physically available. This was the likely culprit for several failed runs, which probably tried to use device memory that was not actually present. After modifying the code as in Listing \ref{code:mem} we were able to run the benchmark limited to 95\% of the memory reported by {\tt nvidia-smi}.
 
-\begin{lstlisting}[language=Python, caption=Limiting memory usage in TensorFlow, label={code:mem}]
+\noindent\begin{minipage}{.65\textwidth}
+\begin{lstlisting}[language=Python, caption=Limiting memory usage in TensorFlow, label={code:mem}, frame = tlrb]
 mem_frac = 0.95
 gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=mem_frac)
 sess = tf.Session(config=tf.ConfigProto(gpu_options=gpu_options))
 \end{lstlisting}
+\end{minipage} \hfill
 
 \begin{table}[t]
 \centering
